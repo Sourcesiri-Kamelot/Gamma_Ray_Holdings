@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Gamma Ray Holdings - Live Revenue Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(46, 204, 113, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #2ecc71;
+            margin-top: 10px;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, #2ecc71, #3498db, #e74c3c);
+            background-size: 400% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffd700;
+        }
+        
+        .metric-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .metric-change {
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .metric-change.positive {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .metric-change.negative {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .platform-breakdown {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .platform-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .platform-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .platform-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .platform-name {
+            font-weight: bold;
+        }
+        
+        .platform-revenue {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .projections-section {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .projections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .projection-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .projection-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 8s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .projection-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .projection-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .projection-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .projection-timeframe {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .grain-of-sand {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px;
+            text-align: center;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .grain-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+        
+        .grain-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .grain-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .grain-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .grain-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>💰 Gamma Ray Holdings Revenue Tracker</h1>
+        <p>Real-time revenue monitoring across all platforms</p>
+        <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span>Live Data</span>
+        </div>
+    </div>
+    
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-icon">💰</div>
+            <div class="metric-value" id="totalRevenue">$5,247,832</div>
+            <div class="metric-label">Total Monthly Revenue</div>
+            <div class="metric-change positive" id="revenueChange">+12.5% vs last month</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-icon">👥</div>
+            <div class="metric-value" id="totalUsers">247,891</div>
+            <div class="metric-label">Active Users</div>
+            <div class="metric-change positive" id="userChange">+8.3% vs last month</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-icon">📈</div>
+            <div class="metric-value" id="arpu">$21.17</div>
+            <div class="metric-label">Average Revenue Per User</div>
+            <div class="metric-change positive" id="arpuChange">+3.8% vs last month</div>
+        </div>
+        
+        <div class="metric-card">
+            <div class="metric-icon">🧂</div>
+            <div class="metric-value" id="marketPenetration">0.0044%</div>
+            <div class="metric-label">Market Penetration</div>
+            <div class="metric-change positive" id="penetrationChange">Still a grain of sand!</div>
+        </div>
+    </div>
+    
+    <div class="charts-container">
+        <div class="chart-card">
+            <div class="chart-title">📊 Revenue Growth Trend</div>
+            <canvas id="revenueChart" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <div class="chart-title">🏢 Platform Revenue Breakdown</div>
+            <div class="platform-breakdown">
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">🤖</div>
+                        <div>
+                            <div class="platform-name">Helo-Im.AI</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">50K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$1,247K</div>
+                </div>
+                
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">🚀</div>
+                        <div>
+                            <div class="platform-name">SwiftAgent.io</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">42K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$1,089K</div>
+                </div>
+                
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">🧠</div>
+                        <div>
+                            <div class="platform-name">SoulCore Hub</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">38K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$892K</div>
+                </div>
+                
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">⚡</div>
+                        <div>
+                            <div class="platform-name">StackFu.io</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">35K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$743K</div>
+                </div>
+                
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">🏠</div>
+                        <div>
+                            <div class="platform-name">Homes2Show</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">28K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$634K</div>
+                </div>
+                
+                <div class="platform-item">
+                    <div class="platform-info">
+                        <div class="platform-icon">🎨</div>
+                        <div>
+                            <div class="platform-name">Others (6)</div>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">54K users</div>
+                        </div>
+                    </div>
+                    <div class="platform-revenue">$642K</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grain-of-sand">
+        <div class="grain-title">🧂 Grain of Sand Analysis</div>
+        <p>We're capturing just a tiny fraction of the internet, yet generating massive revenue</p>
+        
+        <div class="grain-stats">
+            <div class="grain-stat">
+                <div class="grain-stat-value">5.6B</div>
+                <div class="grain-stat-label">Total Internet Users</div>
+            </div>
+            <div class="grain-stat">
+                <div class="grain-stat-value">247K</div>
+                <div class="grain-stat-label">Our Users</div>
+            </div>
+            <div class="grain-stat">
+                <div class="grain-stat-value">0.0044%</div>
+                <div class="grain-stat-label">Market Share</div>
+            </div>
+            <div class="grain-stat">
+                <div class="grain-stat-value">$5.2M</div>
+                <div class="grain-stat-label">Monthly Revenue</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="projections-section">
+        <h2 style="text-align: center; margin-bottom: 20px;">🚀 Revenue Projections</h2>
+        
+        <div class="projections-grid">
+            <div class="projection-card">
+                <div class="projection-content">
+                    <div class="projection-title">6 Months</div>
+                    <div class="projection-value">$12M</div>
+                    <div class="projection-timeframe">Monthly Revenue</div>
+                </div>
+            </div>
+            
+            <div class="projection-card">
+                <div class="projection-content">
+                    <div class="projection-title">12 Months</div>
+                    <div class="projection-value">$25M</div>
+                    <div class="projection-timeframe">Monthly Revenue</div>
+                </div>
+            </div>
+            
+            <div class="projection-card">
+                <div class="projection-content">
+                    <div class="projection-title">24 Months</div>
+                    <div class="projection-value">$75M</div>
+                    <div class="projection-timeframe">Monthly Revenue</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Revenue chart
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Monthly Revenue ($M)',
+                    data: [2.1, 2.8, 3.2, 3.9, 4.3, 4.8, 5.2],
+                    borderColor: '#ffd700',
+                    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ffd700',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)',
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+        
+        // Live data updates
+        function updateLiveData() {
+            // Simulate real-time data updates
+            const baseRevenue = 5247832;
+            const variation = Math.floor(Math.random() * 50000) - 25000;
+            const newRevenue = baseRevenue + variation;
+            
+            document.getElementById('totalRevenue').textContent = '$' + newRevenue.toLocaleString();
+            
+            const baseUsers = 247891;
+            const userVariation = Math.floor(Math.random() * 1000) - 500;
+            const newUsers = baseUsers + userVariation;
+            
+            document.getElementById('totalUsers').textContent = newUsers.toLocaleString();
+            
+            const arpu = (newRevenue / newUsers).toFixed(2);
+            document.getElementById('arpu').textContent = '$' + arpu;
+            
+            const penetration = ((newUsers / 5600000000) * 100).toFixed(4);
+            document.getElementById('marketPenetration').textContent = penetration + '%';
+        }
+        
+        // Animate metrics on load
+        function animateMetrics() {
+            const metrics = [
+                { id: 'totalRevenue', target: 5247832, prefix: '$', format: 'number' },
+                { id: 'totalUsers', target: 247891, format: 'number' },
+                { id: 'arpu', target: 21.17, prefix: '$', format: 'decimal' },
+                { id: 'marketPenetration', target: 0.0044, suffix: '%', format: 'decimal' }
+            ];
+            
+            metrics.forEach(metric => {
+                const element = document.getElementById(metric.id);
+                let current = 0;
+                const increment = metric.target / 60;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= metric.target) {
+                        current = metric.target;
+                        clearInterval(timer);
+                    }
+                    
+                    let displayValue;
+                    if (metric.format === 'number') {
+                        displayValue = Math.floor(current).toLocaleString();
+                    } else {
+                        displayValue = current.toFixed(metric.target < 1 ? 4 : 2);
+                    }
+                    
+                    const prefix = metric.prefix || '';
+                    const suffix = metric.suffix || '';
+                    element.textContent = prefix + displayValue + suffix;
+                }, 50);
+            });
+        }
+        
+        // Initialize
+        animateMetrics();
+        
+        // Update live data every 5 seconds
+        setInterval(updateLiveData, 5000);
+        
+        // Add hover effects to platform items
+        document.querySelectorAll('.platform-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(10px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0) scale(1)';
+            });
+        });
+        
+        // Add click tracking
+        document.querySelectorAll('.platform-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const platformName = item.querySelector('.platform-name').textContent;
+                console.log('Platform clicked:', platformName);
+                // Here you could show detailed analytics for that platform
+            });
+        });
+    </script>
+</body>
+</html>
