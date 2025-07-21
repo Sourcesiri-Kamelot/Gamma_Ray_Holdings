@@ -492,29 +492,43 @@
                 <button class="nav-btn" onclick="printToPDF()">📄 Save PDF</button>
             </div>
             
-            <h3>📧 Email Template for Josef:</h3>
-            <textarea id="emailTemplate" readonly="">Subject: GammaRay Holdings - Solar Cerebro Initiative Pitch Deck 🚀
+            <h3>📧 Investment Contact Template:</h3>
+            <textarea id="emailTemplate" readonly="">Subject: Investment Opportunity - GammaRay Holdings Solar Cerebro Initiative 🚀
 
-Hey Josef,
+Hello,
 
-Here's our complete $10M investment pitch deck for the Solar Cerebro Initiative! 
+I am interested in the $10M investment opportunity for the Solar Cerebro Initiative by GammaRay Holdings.
 
-🔥 KEY HIGHLIGHTS:
+🔥 KEY HIGHLIGHTS I'VE REVIEWED:
 • 50% cheaper than AWS/Google/Azure
 • 80% profit margins through solar power  
 • $900M revenue potential (0.028% of internet users)
-• Built on family partnership model with big tech
+• Built on partnership model with big tech
 • 135-270x investor returns projected
 
-Open the attached HTML file in any browser to view the full interactive presentation.
+I would like to discuss:
+- Investment terms and minimum requirements
+- Due diligence materials and financial projections
+- Technical specifications and competitive advantages
+- Timeline for deployment and expected ROI
+- Legal structure and equity arrangements
 
-This is our ticket to revolutionizing cloud computing while making everyone rich! 💰
+My contact information:
+Name: [Your Name]
+Phone: [Your Phone]
+Email: [Your Email]
+Investment Range: [Your Range]
 
-Ready to secure this funding and change the game!
+Please contact me at your earliest convenience to schedule a meeting.
 
-Rev. Scientist Kiwon Bowens
-Lead Visionary &amp; CTO
-GammaRay Holdings
+Best regards,
+[Your Name]
+
+---
+Contact Information:
+Rev. Scientist Kiwon Bowens - Lead Visionary & CTO
+📧 kiwonbowens@helo-im.ai
+📞 239-398-2234
 🌞 Solar Cerebro Initiative 🌞</textarea>
             
             <div style="margin: 20px 0;">
@@ -524,10 +538,11 @@ GammaRay Holdings
             <h3>💼 How to Share:</h3>
             <div style="text-align: left; color: #ffffff; margin: 20px 0;">
                 <p>1. Click "Download HTML" to save the presentation file</p>
-                <p>2. Attach the HTML file to your email to Josef</p>
-                <p>3. Copy and paste the email template above</p>
-                <p>4. Josef can open it in any browser - no special software needed!</p>
+                <p>2. Attach the HTML file to your email to potential investors</p>
+                <p>3. Copy and paste the investment contact template above</p>
+                <p>4. Investors can open it in any browser - no special software needed!</p>
                 <p>5. Or use "Save PDF" to create a PDF version</p>
+                <p>6. Direct contact: <strong>kiwonbowens@helo-im.ai</strong> or <strong>239-398-2234</strong></p>
             </div>
             
             <button class="nav-btn" onclick="closeShareModal()" style="background: linear-gradient(45deg, #FF0000, #6A0DAD);">✖ Close</button>
@@ -614,7 +629,7 @@ GammaRay Holdings
         function copyEmailTemplate() {
             const template = document.getElementById('emailTemplate').value;
             navigator.clipboard.writeText(template).then(() => {
-                showNotification('📧 Email template copied! Ready to send to Josef!');
+                showNotification('📧 Investment contact template copied! Ready to send to potential investors!');
             });
         }
         
