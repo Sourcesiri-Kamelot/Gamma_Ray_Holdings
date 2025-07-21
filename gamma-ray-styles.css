@@ -1,0 +1,308 @@
+/* Gamma Ray Holdings - Shared Styles */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+/* Global Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #000005;
+    color: #E0E0E0;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Gamma Ray Color Palette */
+:root {
+    --gamma-violet: #8A2BE2;
+    --gamma-blue: #0066FF;
+    --gamma-cyan: #00FFFF;
+    --gamma-green: #00FF41;
+    --gamma-yellow: #FFD700;
+    --gamma-orange: #FF8C00;
+    --gamma-red: #FF0040;
+    --gamma-deep-red: #CC0000;
+    --gamma-white: #FFFFFF;
+    --gamma-silver: #C0C0C0;
+    --gamma-dark: #000005;
+    --gamma-glass: rgba(10, 10, 20, 0.65);
+}
+
+/* 3D Canvas Background */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Glassmorphism Effects */
+.glass-card {
+    background: var(--gamma-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+}
+
+.glass-header {
+    background: rgba(10, 10, 20, 0.8);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gamma Ray Color Classes */
+.text-gamma-violet { color: var(--gamma-violet); }
+.text-gamma-blue { color: var(--gamma-blue); }
+.text-gamma-cyan { color: var(--gamma-cyan); }
+.text-gamma-green { color: var(--gamma-green); }
+.text-gamma-yellow { color: var(--gamma-yellow); }
+.text-gamma-orange { color: var(--gamma-orange); }
+.text-gamma-red { color: var(--gamma-red); }
+.text-gamma-deep-red { color: var(--gamma-deep-red); }
+
+.bg-gamma-violet { background-color: var(--gamma-violet); }
+.bg-gamma-blue { background-color: var(--gamma-blue); }
+.bg-gamma-cyan { background-color: var(--gamma-cyan); }
+.bg-gamma-green { background-color: var(--gamma-green); }
+.bg-gamma-yellow { background-color: var(--gamma-yellow); }
+.bg-gamma-orange { background-color: var(--gamma-orange); }
+.bg-gamma-red { background-color: var(--gamma-red); }
+.bg-gamma-deep-red { background-color: var(--gamma-deep-red); }
+
+/* Gamma Ray Gradient Backgrounds */
+.bg-gamma-spectrum {
+    background: linear-gradient(45deg, 
+        var(--gamma-violet) 0%, 
+        var(--gamma-blue) 14%, 
+        var(--gamma-cyan) 28%, 
+        var(--gamma-green) 42%, 
+        var(--gamma-yellow) 57%, 
+        var(--gamma-orange) 71%, 
+        var(--gamma-red) 85%, 
+        var(--gamma-deep-red) 100%);
+}
+
+.bg-gamma-rays {
+    background: radial-gradient(circle at center, 
+        var(--gamma-red) 0%, 
+        var(--gamma-orange) 20%, 
+        var(--gamma-yellow) 40%, 
+        transparent 70%);
+}
+
+/* Button Styles */
+.gamma-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    border: 2px solid var(--gamma-yellow);
+    color: var(--gamma-yellow);
+    background: transparent;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.gamma-button:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 215, 0, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
+}
+
+.gamma-button:hover:before {
+    width: 250%;
+    height: 250%;
+}
+
+.gamma-button:hover {
+    color: var(--gamma-white);
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+.gamma-button-red {
+    border-color: var(--gamma-red);
+    color: var(--gamma-red);
+}
+
+.gamma-button-red:before {
+    background: rgba(255, 0, 64, 0.2);
+}
+
+.gamma-button-red:hover {
+    box-shadow: 0 0 25px rgba(255, 0, 64, 0.5);
+    background: rgba(255, 0, 64, 0.1);
+}
+
+/* Scroll Animations */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Header Styles */
+.gamma-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 1rem;
+}
+
+.gamma-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+}
+
+.gamma-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--gamma-white);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.gamma-nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.gamma-nav-links a {
+    color: var(--gamma-silver);
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.gamma-nav-links a:hover {
+    color: var(--gamma-yellow);
+}
+
+/* Content Containers */
+.gamma-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.gamma-section {
+    padding: 4rem 0;
+    position: relative;
+    z-index: 10;
+}
+
+.gamma-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Text Effects */
+.gamma-glow {
+    text-shadow: 0 0 10px currentColor;
+}
+
+.gamma-pulse {
+    animation: gammaPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes gammaPulse {
+    from {
+        text-shadow: 0 0 5px currentColor;
+    }
+    to {
+        text-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gamma-nav-links {
+        display: none;
+    }
+    
+    .gamma-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .gamma-section {
+        padding: 2rem 0;
+    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.mt-12 { margin-top: 3rem; }
+
+.p-4 { padding: 1rem; }
+.p-8 { padding: 2rem; }
+.p-12 { padding: 3rem; }
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}

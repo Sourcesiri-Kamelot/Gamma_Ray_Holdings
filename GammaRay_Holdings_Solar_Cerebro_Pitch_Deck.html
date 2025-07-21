@@ -1,14 +1,18 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GammaRay Holdings - Solar Cerebro Initiative | Investment Pitch Deck</title>
+    <link rel="stylesheet" href="gamma-ray-styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
-            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background-color: #000005;
+            color: #E0E0E0;
             overflow: hidden;
         }
         
@@ -16,6 +20,8 @@
             width: 100vw; height: 100vh; display: none; flex-direction: column;
             justify-content: center; align-items: center; padding: 60px;
             position: relative; animation: slideIn 0.6s ease-out;
+            background: var(--gamma-glass);
+            backdrop-filter: blur(10px);
         }
         
         .slide.active { display: flex; }
@@ -27,22 +33,27 @@
         
         .slide-number {
             position: absolute; top: 30px; right: 40px;
-            color: #FFD700; font-size: 1.4rem; font-weight: bold;
+            color: var(--gamma-yellow); font-size: 1.4rem; font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .slide h1 {
-            font-size: 4rem; color: #FFD700; text-align: center;
-            margin-bottom: 40px; text-shadow: 0 0 30px #FFD700;
-            font-weight: 700; letter-spacing: 2px;
+            font-size: 4rem; color: var(--gamma-yellow); text-align: center;
+            margin-bottom: 40px; text-shadow: 0 0 30px var(--gamma-yellow);
+            font-weight: 900; letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .slide h2 {
-            font-size: 2.5rem; color: #00FF41; text-align: center;
-            margin-bottom: 30px; font-weight: 600;
+            font-size: 2.5rem; color: var(--gamma-green); text-align: center;
+            margin-bottom: 30px; font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .slide h3 {
             font-size: 1.8rem; margin-bottom: 20px; font-weight: 600;
+            color: var(--gamma-cyan);
+            font-family: 'Orbitron', sans-serif;
         }
         
         .content { max-width: 1400px; width: 100%; text-align: center; }
@@ -53,50 +64,65 @@
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.08); border: 3px solid #FFD700;
-            border-radius: 20px; padding: 35px; backdrop-filter: blur(15px);
-            transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+            background: var(--gamma-glass); 
+            border: 3px solid var(--gamma-yellow);
+            border-radius: 20px; padding: 35px; 
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease; 
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
         }
         
         .card:hover {
-            transform: translateY(-10px); border-color: #00FF41;
-            box-shadow: 0 20px 50px rgba(0, 255, 65, 0.3);
+            transform: translateY(-10px); 
+            border-color: var(--gamma-red);
+            box-shadow: 0 20px 50px rgba(255, 0, 64, 0.4);
         }
         
         .metric {
-            font-size: 4rem; font-weight: 900; text-shadow: 0 0 20px currentColor;
+            font-size: 4rem; font-weight: 900; 
+            text-shadow: 0 0 20px currentColor;
             margin-bottom: 15px; display: block;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .team-member {
-            background: rgba(0, 255, 65, 0.15); border: 3px solid #00FF41;
+            background: rgba(0, 255, 65, 0.15); 
+            border: 3px solid var(--gamma-green);
             border-radius: 20px; padding: 30px; text-align: left;
             transition: all 0.3s ease;
         }
         
-        .team-member:hover { transform: scale(1.05); }
+        .team-member:hover { 
+            transform: scale(1.05); 
+            border-color: var(--gamma-orange);
+            box-shadow: 0 15px 40px rgba(255, 140, 0, 0.3);
+        }
         
         ul { text-align: left; margin: 25px 0; padding-left: 25px; }
         li { margin: 15px 0; font-size: 1.2rem; line-height: 1.5; }
         
-        .highlight { color: #FFD700; font-weight: bold; }
-        .success { color: #00FF41; }
-        .danger { color: #FF0000; }
-        .info { color: #6A0DAD; }
+        .highlight { color: var(--gamma-yellow); font-weight: bold; }
+        .success { color: var(--gamma-green); }
+        .danger { color: var(--gamma-red); }
+        .info { color: var(--gamma-violet); }
+        .warning { color: var(--gamma-orange); }
+        .primary { color: var(--gamma-cyan); }
         
         .cosmic-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
-                radial-gradient(circle at 15% 85%, #FFD700 0%, transparent 40%),
-                radial-gradient(circle at 85% 15%, #00FF41 0%, transparent 40%),
-                radial-gradient(circle at 45% 45%, #FF0000 0%, transparent 40%),
-                radial-gradient(circle at 65% 85%, #6A0DAD 0%, transparent 40%);
-            opacity: 0.12; z-index: -1; animation: cosmic-pulse 12s ease-in-out infinite;
+                radial-gradient(circle at 15% 85%, var(--gamma-yellow) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, var(--gamma-green) 0%, transparent 40%),
+                radial-gradient(circle at 45% 45%, var(--gamma-red) 0%, transparent 40%),
+                radial-gradient(circle at 65% 85%, var(--gamma-violet) 0%, transparent 40%),
+                radial-gradient(circle at 25% 25%, var(--gamma-cyan) 0%, transparent 30%),
+                radial-gradient(circle at 75% 75%, var(--gamma-orange) 0%, transparent 30%);
+            opacity: 0.15; z-index: -1; animation: cosmic-pulse 12s ease-in-out infinite;
         }
         
         @keyframes cosmic-pulse {
-            0%, 100% { opacity: 0.12; }
-            50% { opacity: 0.25; }
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.3; }
         }
         
         .navigation {
@@ -105,31 +131,39 @@
         }
         
         .nav-btn {
-            background: linear-gradient(45deg, #FFD700, #FF0000);
+            background: linear-gradient(45deg, var(--gamma-yellow), var(--gamma-red));
             color: #000000; border: none; padding: 12px 20px;
             border-radius: 25px; cursor: pointer; font-weight: bold;
             font-size: 1rem; transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
             white-space: nowrap;
+            font-family: 'Orbitron', sans-serif;
         }
         
         .nav-btn:hover {
-            background: linear-gradient(45deg, #00FF41, #6A0DAD);
-            color: #ffffff; transform: scale(1.05);
+            background: linear-gradient(45deg, var(--gamma-green), var(--gamma-violet));
+            color: var(--gamma-white); transform: scale(1.05);
             box-shadow: 0 8px 25px rgba(0, 255, 65, 0.5);
         }
         
         .progress-bar {
             position: fixed; top: 0; left: 0; height: 5px;
-            background: linear-gradient(90deg, #FFD700, #00FF41, #FF0000, #6A0DAD);
+            background: linear-gradient(90deg, 
+                var(--gamma-violet), var(--gamma-blue), var(--gamma-cyan), 
+                var(--gamma-green), var(--gamma-yellow), var(--gamma-orange), 
+                var(--gamma-red), var(--gamma-deep-red));
             transition: width 0.3s ease; z-index: 1000;
         }
         
         .company-logo {
-            font-size: 5rem; background: linear-gradient(45deg, #FFD700, #FF0000, #00FF41, #6A0DAD);
+            font-size: 5rem; 
+            background: linear-gradient(45deg, 
+                var(--gamma-yellow), var(--gamma-red), 
+                var(--gamma-green), var(--gamma-violet));
             background-size: 400% 400%; -webkit-background-clip: text;
             -webkit-text-fill-color: transparent; animation: logo-glow 4s ease-in-out infinite;
             margin-bottom: 20px; display: inline-block;
+            font-family: 'Orbitron', sans-serif;
         }
         
         @keyframes logo-glow {
@@ -144,7 +178,7 @@
         
         .slide-transition {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #FFD700, transparent);
+            background: radial-gradient(circle, var(--gamma-yellow), transparent);
             opacity: 0; pointer-events: none; z-index: 999;
             transition: opacity 0.3s ease;
         }
@@ -158,16 +192,27 @@
         }
         
         .modal-content {
-            background: linear-gradient(135deg, #1a1a1a, #000000);
-            padding: 40px; border-radius: 20px; border: 3px solid #FFD700;
+            background: var(--gamma-glass);
+            backdrop-filter: blur(15px);
+            padding: 40px; border-radius: 20px; border: 3px solid var(--gamma-yellow);
             max-width: 700px; width: 90%; text-align: center; max-height: 80vh; overflow-y: auto;
         }
         
-        .modal h2 { color: #FFD700; margin-bottom: 30px; font-size: 2rem; }
-        .modal h3 { color: #00FF41; margin: 20px 0 15px 0; font-size: 1.4rem; }
+        .modal h2 { color: var(--gamma-yellow); margin-bottom: 30px; font-size: 2rem; }
+        .modal h3 { color: var(--gamma-green); margin: 20px 0 15px 0; font-size: 1.4rem; }
         
         .modal textarea {
             width: 100%; height: 120px; background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gamma-cyan); border-radius: 10px; padding: 15px;
+            color: var(--gamma-white); font-size: 1rem; resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div class="cosmic-bg"></div>
+    <div class="slide-transition"></div>
+    <div class="progress-bar" style="width: 0%;"></div>
             color: #ffffff; border: 2px solid #FFD700; border-radius: 10px;
             padding: 15px; font-size: 1rem; font-family: inherit; resize: vertical;
         }
@@ -215,22 +260,22 @@
     <div class="slide active">
         <div class="slide-number">1/15</div>
         <div class="content">
-            <div class="company-logo">🚀</div>
+            <div class="company-logo">⚡</div>
             <h1>GAMMARAY HOLDINGS</h1>
             <h2>Solar Cerebro Initiative</h2>
-            <div style="font-size: 2rem; color: #6A0DAD; margin: 40px 0;">
-                🌞 First Solar-Powered AI Cloud Empire 🌞
+            <div style="font-size: 2rem; color: var(--gamma-violet); margin: 40px 0;">
+                ☀️ First Solar-Powered AI Cloud Empire ⚡
             </div>
-            <div style="font-size: 1.8rem; color: #00FF41; margin: 30px 0;">
+            <div style="font-size: 1.8rem; color: var(--gamma-green); margin: 30px 0;">
                 $10M Investment Request
             </div>
-            <div style="font-size: 1.5rem; color: #FFD700; margin: 30px 0;">
+            <div style="font-size: 1.5rem; color: var(--gamma-yellow); margin: 30px 0;">
                 "50% Cheaper Than AWS • 80% Profit Margins"
             </div>
             <div class="grid" style="margin-top: 60px;">
                 <div class="team-member">
                     <h3>🎯 Rev. Scientist Kiwon Bowens</h3>
-                    <p style="color: #FFD700; font-size: 1.2rem;">Lead Visionary &amp; CTO</p>
+                    <p style="color: var(--gamma-yellow); font-size: 1.2rem;">Lead Visionary &amp; CTO</p>
                 </div>
                 <div class="team-member">
                     <h3>📊 Josef Bivins</h3>
@@ -633,5 +678,9 @@ GammaRay Holdings
         updateProgress();
     </script>
 
+    <script type="module">
+        import { initGammaRayEffects } from './gamma-ray-animations.js';
+        initGammaRayEffects();
+    </script>
 
 </body></html>
